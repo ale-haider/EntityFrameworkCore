@@ -1,6 +1,7 @@
 ﻿//Console.WriteLine("Hello, World!");
 
 using EntityFrameworkCore.Data;
+using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
 
 using var context = new FootballLeagueDbContext();
@@ -68,6 +69,76 @@ async Task SkipAndTake()
     }
 
 }
+/* z-score
+ plot the trainng data 
+aim for abou -1 to 1 acceptable range
+-100 to 100 ⛔ not acceptable
+
+🔩 G-D FOR CONVERGENCE
+ curve j is leveing up and then flatened out 
+epsilon be 10^3
+found parameters w,b to get close to global minimum
+*/
+
+
+
+//// NO TRACKTING -EF CORE TRACKS OBJECTS THAT ARE RETUREND BY QUERIES
+////discontineous lik API
+
+//var teams = await context.Teams
+//    .AsNoTracking()
+//    //for readonly
+//    .ToListAsync();
+
+//foreach (var t in teams)
+//{
+//    Console.WriteLine($"{t.Name}");
+//}
+
+
+Console.WriteLine("enter 1 for team id with 1 for teams that contain 'F C' type '2'");
+var option = Convert.ToInt32(Console.ReadLine());
+List<Team> teamAsList = new List<Team>();
+
+teamAsList = await context.Teams.ToListAsync();
+
+if (option== 1)
+{
+    teamAsList = teamAsList.Where(q => q.Id == 1).ToList();
+}
+else if (option== 2)
+{
+    teamAsList = teamAsList.Where(q => q.Name.Contains("F.C.")).ToList();
+}
+foreach (var t in teamAsList)
+{
+    Console.WriteLine(t.Name);
+}
+
+
+var teamAsQueryable = context.Teams.AsQueryable();
+if (option == 1)
+{
+    teamAsQueryable = teamAsQueryable.Where(q => q.Id == 1);
+}
+else if (option == 2)
+{
+    teamAsQueryable = teamAsQueryable.Where(q => q.Name.Contains("F.C."));
+}
+foreach (var t in teamAsQueryable)
+{
+    Console.WriteLine(t.Name);
+} 
+
+
+
+async Task ProjectionAndSelection()
+{
+
+    var teamNames = await context.Teams
+        //.Select(q => new(name = q.Name, Date = q.CreatedDate )
+        .ToListAsync();
+}
 
 void GroupByMethod()
 {
@@ -126,7 +197,7 @@ async Task GetFilteredTeams()
         Console.WriteLine(item.Name);
     }
 }
-
+//
 async Task GetAllTeams()
 {
 
