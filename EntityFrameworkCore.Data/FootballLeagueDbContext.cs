@@ -24,6 +24,7 @@ namespace EntityFrameworkCore.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite($" Data Source={DbPath}")
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableSensitiveDataLogging()
                  .EnableDetailedErrors();
