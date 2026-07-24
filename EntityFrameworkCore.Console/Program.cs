@@ -282,8 +282,14 @@ async Task GetOneTeam()
 
 //👉CRUD OPOERATIONS
 
-
-
+//DELETE OPERATION
+async Task DeleteRecord()
+{
+    var coach = await context.Coaches.FindAsync(3);
+    //context.Remove(coach);
+    context.Entry(coach).State = EntityState.Deleted;
+    await context.SaveChangesAsync();
+}
 
 //UPDATE OPERATION
 async Task UpdateWithTracking()
