@@ -72,9 +72,9 @@ async Task SkipAndTake()
 /* z-score
  plot the trainng data 
 aim for abou -1 to 1 acceptable range
--100 to 100 ⛔ not acceptable
+-100 to 100  not acceptable
 
-🔩 G-D FOR CONVERGENCE
+ G-D FOR CONVERGENCE
  curve j is leveing up and then flatened out 
 epsilon be 10^3
 found parameters w,b to get close to global minimum
@@ -95,40 +95,56 @@ found parameters w,b to get close to global minimum
 //    Console.WriteLine($"{t.Name}");
 //}
 
+async Task FindingFunction()
+{
 
-Console.WriteLine("enter 1 for team id with 1 for teams that contain 'F C' type '2'");
-var option = Convert.ToInt32(Console.ReadLine());
-List<Team> teamAsList = new List<Team>();
+    Console.WriteLine("enter 1 for team id with 1 for teams that contain 'F C' type '2'");
+    var option = Convert.ToInt32(Console.ReadLine());
+    List<Team> teamAsList = new List<Team>();
 
-teamAsList = await context.Teams.ToListAsync();
+    teamAsList = await context.Teams.ToListAsync();
 
-if (option== 1)
-{
-    teamAsList = teamAsList.Where(q => q.Id == 1).ToList();
+    if (option == 1)
+    {
+        teamAsList = teamAsList.Where(q => q.Id == 1).ToList();
+    }
+    else if (option == 2)
+    {
+        teamAsList = teamAsList.Where(q => q.Name.Contains("F.C.")).ToList();
+    }
+    foreach (var t in teamAsList)
+    {
+        Console.WriteLine(t.Name);
+    }
 }
-else if (option== 2)
+
+async Task FindingQuerable()
 {
-    teamAsList = teamAsList.Where(q => q.Name.Contains("F.C.")).ToList();
-}
-foreach (var t in teamAsList)
-{
-    Console.WriteLine(t.Name);
+    Console.WriteLine("enter 1 for team id with 1 for teams that contain 'F C' type '2'");
+    var option = Convert.ToInt32(Console.ReadLine());
+    List<Team> teamAsList = new List<Team>();
+
+    teamAsList = await context.Teams.ToListAsync();
+
+    var teamAsQueryable = context.Teams.AsQueryable();
+    if (option == 1)
+    {
+        teamAsQueryable = teamAsQueryable.Where(q => q.Id == 1);
+    }
+    else if (option == 2)
+    {
+        teamAsQueryable = teamAsQueryable.Where(q => q.Name.Contains("F.C."));
+    }
+    foreach (var t in teamAsQueryable)
+    {
+        Console.WriteLine(t.Name);
+    }
 }
 
 
-var teamAsQueryable = context.Teams.AsQueryable();
-if (option == 1)
-{
-    teamAsQueryable = teamAsQueryable.Where(q => q.Id == 1);
-}
-else if (option == 2)
-{
-    teamAsQueryable = teamAsQueryable.Where(q => q.Name.Contains("F.C."));
-}
-foreach (var t in teamAsQueryable)
-{
-    Console.WriteLine(t.Name);
-} 
+
+
+ 
 
 
 
@@ -262,5 +278,107 @@ async Task GetOneTeam()
         Console.WriteLine(teamBasedOnId.Name);
     }
 }
+
+
+//👉CRUD OPOERATIONS
+
+
+
+
+//UPDATE OPERATION
+async Task UpdateWithTracking()
+{
+    var coach = await context.Coaches.FindAsync(5);
+
+    coach.Name = "Ali Haider";
+    coach.CreatedDate = DateTime.Now;
+    await context.SaveChangesAsync();
+}
+//if tracking not enabled then update
+async Task UpdateWithNoTracking()
+{
+    var coach1 = await context.Coaches
+        .AsNoTracking()
+        .FirstOrDefaultAsync(q => q.Id == 5);
+    coach1.Name = "testin no tracking";
+
+    Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+    context.Update(coach1);
+    Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+    await context.SaveChangesAsync();
+    Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+}
+//INSERTING DATA
+//SIMPLE INSERT
+
+async Task InsertOneRecord()
+{
+    var newCoach = new Coach
+    {
+        Name = " Jose Mourineo",
+        CreatedDate = DateTime.Now,
+    };
+    await context.Coaches.AddAsync(newCoach);
+    await context.SaveChangesAsync();
+}
+
+
+////LOOP INSERT
+async Task InsertWithLoop()
+{
+    var newCoach1 = new Coach
+    {
+        Name = " Theodore Whitmore",
+        CreatedDate = DateTime.Now,
+    };
+    var newCoach = new Coach
+    {
+        Name = " Jose Mourineo",
+        CreatedDate = DateTime.Now,
+    };
+
+    List<Coach> coaches = new List<Coach>
+{
+    newCoach1,
+    newCoach,
+};
+
+    foreach (var coach in coaches)
+    {
+        await context.Coaches.AddAsync(coach);
+
+    }
+    Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+    await context.SaveChangesAsync();
+    Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+
+}
+    //BATCH INSERT
+
+async Task InsertRange()
+{
+    var newCoach1 = new Coach
+    {
+        Name = " Theodore Whitmore",
+        CreatedDate = DateTime.Now,
+    };
+    var newCoach = new Coach
+    {
+        Name = " Jose Mourineo",
+        CreatedDate = DateTime.Now,
+    };
+
+    List<Coach> coaches = new List<Coach>
+{
+    newCoach1,
+    newCoach,
+};
+
+    await context.Coaches.AddRangeAsync(coaches);
+    await context.SaveChangesAsync();
+}
+
+
+
 
 
