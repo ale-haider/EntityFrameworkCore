@@ -69,7 +69,9 @@ async Task SkipAndTake()
     }
 
 }
-/* z-score
+/* //ML Stanford
+ *
+ * z-score
  plot the trainng data 
 aim for abou -1 to 1 acceptable range
 -100 to 100  not acceptable
@@ -78,6 +80,31 @@ aim for abou -1 to 1 acceptable range
  curve j is leveing up and then flatened out 
 epsilon be 10^3
 found parameters w,b to get close to global minimum
+
+ //OVERFITTINF
+overfitting == high variance
+underfitting == high bias
+
+// ADDRESSING OVERFITTING
+1. collect more training examples
+
+2.select features to include that are only relavent
+by feature selection
+
+3. reduce the size by using regulalization
+
+//REGULARIZATION
+set a parameter to zero == eliminating a feature
+
+Cost function with regularization
+increasing size of lamda  => decrease the features of the data
+
+Gradient descent with regularization
+
+Regularized logistic regression
+
+
+
 */
 
 
@@ -115,6 +142,7 @@ async Task FindingFunction()
     foreach (var t in teamAsList)
     {
         Console.WriteLine(t.Name);
+
     }
 }
 
@@ -401,6 +429,9 @@ async Task InsertRange()
     await context.SaveChangesAsync();
 }
 
+
+//MODULE 6
+//HANDLING DATABASE CHANGES AND MIGRATIONS
 
 
 
