@@ -283,16 +283,20 @@ async Task GetOneTeam()
 //📝CRUD OPOERATIONS
 
 ////EXECUTE DELETE
-//var coaches = await context.Coaches.Where(q => q.Name == "Theodore Whitmore")
-//    .ExecuteDeleteAsync();
-
+async Task ExecuteDelet()
+{
+    var coaches = await context.Coaches.Where(q => q.Name == "Theodore Whitmore")
+        .ExecuteDeleteAsync();
+}
 //EXECUTE UPDATE
-var coaches = await context.Coaches.Where(q => q.Name == "Jose Mourineo")
-    .ExecuteUpdateAsync(set => set
-    .SetProperty(prop => prop.Name, "Pep Guardiola")
-    //.SetProperty(prop => prop.CreatedDate, DateTime.Now)
-    );
-
+async Task ExecuteUpdate()
+{
+    var coaches = await context.Coaches.Where(q => q.Name == "Jose Mourineo")
+        .ExecuteUpdateAsync(set => set
+        .SetProperty(prop => prop.Name, "Pep Guardiola")
+        //.SetProperty(prop => prop.CreatedDate, DateTime.Now)
+        );
+}
 
 //DELETE OPERATION
 async Task DeleteRecord()
