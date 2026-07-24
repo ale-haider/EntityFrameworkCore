@@ -1,5 +1,6 @@
 ﻿using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace EntityFrameworkCore.Data
         }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Coach> Coaches { get; set; }
+        public DbSet<League> Leagues { get; set; }
+        public DbSet<Match> Matches { get; set; }
 
         public string DbPath { get; private set; }
 
@@ -54,4 +57,31 @@ namespace EntityFrameworkCore.Data
                 );
         }
     }
+
+    //internal class LeagueConfiguration : IEntityTypeConfiguration<League>
+    //{
+    //    public void Configure ( EntityTypeBuilder<League> builder )
+    //    {
+    //        builder.HasData(
+    //                new League
+    //                {
+    //                    Id = 1,
+    //                    Name = "Barcalona",
+                        
+    //                },
+    //               new League
+    //               {
+    //                    Id = 2,
+    //                    Name = "Humble Lions F.C.",
+
+    //                },
+    //                new League
+    //                {
+    //                    Id = 3,
+    //                    Name = "Barcalona",
+        
+    //                }
+    //            ); 
+    //    }
+    //}
 }

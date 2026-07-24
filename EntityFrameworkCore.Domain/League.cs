@@ -4,9 +4,11 @@ using System.Text;
 
 namespace EntityFrameworkCore.Domain
 {
-   public  class Coach : BaseDomainModel
+    public class League : BaseDomainModel
     {
-        //public int Id { get; set; }
+        // has its own id as inherited form BaseDomainModel
+
         public string? Name { get; set; }
+
     }
 }
