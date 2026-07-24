@@ -280,7 +280,19 @@ async Task GetOneTeam()
 }
 
 
-//👉CRUD OPOERATIONS
+//📝CRUD OPOERATIONS
+
+////EXECUTE DELETE
+//var coaches = await context.Coaches.Where(q => q.Name == "Theodore Whitmore")
+//    .ExecuteDeleteAsync();
+
+//EXECUTE UPDATE
+var coaches = await context.Coaches.Where(q => q.Name == "Jose Mourineo")
+    .ExecuteUpdateAsync(set => set
+    .SetProperty(prop => prop.Name, "Pep Guardiola")
+    //.SetProperty(prop => prop.CreatedDate, DateTime.Now)
+    );
+
 
 //DELETE OPERATION
 async Task DeleteRecord()
@@ -317,11 +329,12 @@ async Task UpdateWithNoTracking()
 //INSERTING DATA
 //SIMPLE INSERT
 
+//await InsertOneRecord();
 async Task InsertOneRecord()
 {
     var newCoach = new Coach
     {
-        Name = " Jose Mourineo",
+        Name = "Jose Mourineo",
         CreatedDate = DateTime.Now,
     };
     await context.Coaches.AddAsync(newCoach);
@@ -334,7 +347,7 @@ async Task InsertWithLoop()
 {
     var newCoach1 = new Coach
     {
-        Name = " Theodore Whitmore",
+        Name = "Theodore Whitmore",
         CreatedDate = DateTime.Now,
     };
     var newCoach = new Coach
