@@ -350,7 +350,7 @@ async Task UpdateWithNoTracking()
     var coach1 = await context.Coaches
         .AsNoTracking()
         .FirstOrDefaultAsync(q => q.Id == 5);
-    coach1.Name = "testin no tracking";
+    coach1.Name = "testin no tracking"; 
 
     Console.WriteLine(context.ChangeTracker.DebugView.LongView);
     context.Update(coach1);
@@ -432,6 +432,9 @@ async Task InsertRange()
 
 //MODULE 6
 //HANDLING DATABASE CHANGES AND MIGRATIONS
+
+//await context.Database.MigrateAsync(); //TO auto apply migrations that are pending
+
 
 
 
