@@ -12,6 +12,20 @@ namespace EntityFrameworkCore.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Team> builder)
         {
+            builder.HasIndex(q => q.Name).IsUnique();
+            builder.HasMany(n => n.HomeMatches)
+                .WithOne(q => q.HomeTeam)
+                .HasForeignKey(q => q.HomeTeamId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+   
+            
+            
+            builder.HasMany(n => n.AwayMatches)
+                .WithOne(q => q.AwayTeam)
+                .HasForeignKey(q => q.AwayTeamId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasData(
                     new Team
