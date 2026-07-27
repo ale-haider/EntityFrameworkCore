@@ -436,6 +436,74 @@ async Task InsertRange()
 //await context.Database.MigrateAsync(); //TO auto apply migrations that are pending
 
 
+#region Related Data
+////INSETTING RELATED DATA
+////INSERT RECORD WITH FK
+//var match = new Match
+//{
+//    AwayTeamId = 1,
+//    HomeTeamId = 2,
+//    HomeTeamScore = 0,
+//    AwayTeamScore = 0,
+//    Date = new DateTime(2026, 10, 1),
+//    TicketPrice = 20,
+//};
+
+//await context.AddAsync(match);
+//await context.SaveChangesAsync();
+
+////// insert parent/ Child
+//var team = new Team
+//{
+//    Name = "New Team",
+//    Coach = new Coach
+//    {
+//        Name = "Jhonson"
+//    },
+
+//};
 
 
+//await context.AddAsync(team);
+//await context.SaveChangesAsync();
+
+
+// insert parent with childre
+
+var league = new League
+{
+    Name = "Serie A",
+
+    Teams = new List<Team>
+    {
+        new Team{
+        Name = "Juventus",
+            Coach = new Coach
+            {
+                Name = "Juve Coach"
+            }
+        },
+        new Team{
+        Name = "AC MIlan",
+            Coach = new Coach
+            {
+                Name = "William"
+            }
+        },
+        new Team{
+        Name = "AS Roma",
+            Coach = new Coach
+            {
+                Name = "Roma Coach"
+            }
+        },
+    }
+
+};
+
+await context.AddAsync(league);
+await context.SaveChangesAsync();
+
+
+#endregion
 
