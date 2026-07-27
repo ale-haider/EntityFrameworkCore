@@ -8,10 +8,10 @@ public class Match : BaseDomainModel
 
     public DateTime Date {  get; set; }
  
-    public Team HomeTeam { get; set; }
+    public virtual Team HomeTeam { get; set; }
     public int HomeTeamId { get; set; }
 
-    public Team AwayTeam { get; set; }
+    public virtual Team AwayTeam { get; set; }
     public int AwayTeamId { get; set; }
 
 }

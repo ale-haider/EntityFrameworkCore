@@ -437,37 +437,172 @@ async Task InsertRange()
 
 
 #region Related Data
-////INSETTING RELATED DATA
-////INSERT RECORD WITH FK
-//var match = new Match
-//{
-//    AwayTeamId = 1,
-//    HomeTeamId = 2,
-//    HomeTeamScore = 0,
-//    AwayTeamScore = 0,
-//    Date = new DateTime(2026, 10, 1),
-//    TicketPrice = 20,
-//};
 
-//await context.AddAsync(match);
-//await context.SaveChangesAsync();
+//// Lazy loading //  IT IS HIGHLY DISCOURGAED AS IT SLOWS DOWN DATA LOADING
 
-////// insert parent/ Child
-//var team = new Team
+//var league = await context.FindAsync<League>(1);
+
+//foreach ( var team in league.Teams)
 //{
-//    Name = "New Team",
-//    Coach = new Coach
+//    Console.WriteLine(team.Name);
+//}
+
+
+//foreach (var league in  context.Leagues)
+//{
+//    foreach(var team in league.Teams)
 //    {
-//        Name = "Jhonson"
-//    },
+//        Console.WriteLine($" {team.Name} - {team.Coach.Name}");
+//    }
 
-//};
-
-
-//await context.AddAsync(team);
-//await context.SaveChangesAsync();
+//}
 
 
+
+////📝FILTRING INCLUDES
+////GET ALL TEAMS AND ONLY HOME MATCHES WHERE THERY HAVE SCORED
+//// AWAIT INSETMOREMATCHES();
+var teams = await context.Teams
+
+    .Include("Coach")
+    .Include(q => q.HomeMatches.Where(q => q.HomeTeamScore > 0))
+    .ToArrayAsync();
+
+
+foreach (var team in teams)
+{
+    Console.WriteLine($"{team.Name} - {team.Coach.Name}");
+    foreach (var match in team.HomeMatches )
+    {
+        Console.WriteLine($" Score {match.HomeTeamScore}");
+    }
+
+}
+
+
+#endregion
+
+
+// explicit loading
+async Task ExplicitLoading()
+{
+    var league = await context.FindAsync<League>(1);
+    if (league.Teams.Any())
+    {
+        Console.WriteLine("Teams have not been loaded ");
+
+    }
+
+    await context.Entry(league)
+        .Collection(q => q.Teams)
+        .LoadAsync();
+
+    if (league.Teams.Any())
+    {
+        Console.WriteLine("Teams have not been loaded ");
+
+        foreach (var team in league.Teams)
+        {
+            Console.WriteLine($"Teams are: {team.Name}");
+        }
+    }
+
+}
+
+
+
+
+async Task EgerLoadingGetData()
+{
+    var leagues = await context.Leagues
+        //.Include("Teams")    
+        .Include(q => q.Teams)
+            .ThenInclude(q => q.Coach)
+        .ToListAsync();
+
+    foreach (var league in leagues)
+    {
+        Console.WriteLine($"League: {league.Name}");
+        foreach (var team in league.Teams)
+        {
+            Console.WriteLine($"Teams are: {team.Name} and Coach is {team.Coach.Name}");
+        }
+    }
+}
+
+
+async Task InsertMoreMatch()
+{
+    ////INSETTING RELATED DATA
+    ////INSERT RECORD WITH FK
+    var match1 = new Match
+    {
+        AwayTeamId = 2,
+        HomeTeamId = 3,
+        HomeTeamScore = 1,
+        AwayTeamScore = 0,
+        Date = new DateTime(2026, 10, 1),
+        TicketPrice = 20,
+    };
+
+
+    var match2 = new Match
+    {
+        AwayTeamId = 2,
+        HomeTeamId = 1,
+        HomeTeamScore = 1,
+        AwayTeamScore = 0,
+        Date = new DateTime(2026, 10, 1),
+        TicketPrice = 20,
+    };
+
+
+    var match3 = new Match
+    {
+        AwayTeamId = 1,
+        HomeTeamId = 3,
+        HomeTeamScore = 1,
+        AwayTeamScore = 0,
+        Date = new DateTime(2026, 10, 1),
+        TicketPrice = 20,
+    };
+
+
+    var match4 = new Match
+    {
+        AwayTeamId = 4,
+        HomeTeamId = 3,
+        HomeTeamScore = 0,
+        AwayTeamScore = 1,
+        Date = new DateTime(2026, 10, 1),
+        TicketPrice = 20,
+    };
+
+    await context.AddRangeAsync(match1,match2, match3, match4);
+    await context.SaveChangesAsync();
+}
+
+async Task InsertTeam ()
+{
+    ////// insert parent/ Child
+    //var team = new Team
+    //{
+    //    Name = "New Team",
+    //    Coach = new Coach
+    //    {
+    //        Name = "Jhonson"
+    //    },
+
+    //};
+
+
+    //await context.AddAsync(team);
+    //await context.SaveChangesAsync();
+
+}
+
+async Task InsertLeague()
+{ 
 // insert parent with childre
 
 var league = new League
@@ -503,7 +638,6 @@ var league = new League
 
 await context.AddAsync(league);
 await context.SaveChangesAsync();
+}
 
-
-#endregion
 
