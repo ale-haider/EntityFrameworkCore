@@ -4,27 +4,27 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EntityFrameworkCore.Data.Configurations
 {
-    internal class LeagueConfiguration : IEntityTypeConfiguration<League>
+    internal class CoachConfiguration : IEntityTypeConfiguration<Coach>
     {
-        public void Configure(EntityTypeBuilder<League> builder)
+        public void Configure(EntityTypeBuilder<Coach> builder)
         {
 
 
             builder.HasData(
-                    new League
+                    new Coach
                     {
                         Id = 1,
-                        Name = "Pakistan Premiere League",
+                        Name = "Jhon",
                     },
-                    new League
+                    new Coach
                     {
                         Id = 2,
-                        Name = "La Liga",
+                        Name = "Jose Mourinho",
                     },
-                    new League
+                    new Coach
                     {
                         Id = 3,
-                        Name = "English Premiere League",
+                        Name = "Trevor",
                     }
                 );
         }

@@ -38,12 +38,32 @@ namespace EntityFrameworkCore.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.ToTable("Coaches");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Jhon"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Jose Mourinho"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Trevor"
+                        });
                 });
 
             modelBuilder.Entity("EntityFrameworkCore.Domain.League", b =>
@@ -124,6 +144,9 @@ namespace EntityFrameworkCore.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CoachId")
+                        .IsUnique();
+
                     b.HasIndex("LeagueId");
 
                     b.HasIndex("Name")
@@ -135,24 +158,27 @@ namespace EntityFrameworkCore.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CoachId = 0,
+                            CoachId = 1,
                             CreatedDate = new DateTime(2026, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LeagueId = 1,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Spain "
                         },
                         new
                         {
                             Id = 2,
-                            CoachId = 0,
+                            CoachId = 2,
                             CreatedDate = new DateTime(2026, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LeagueId = 1,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "France "
                         },
                         new
                         {
                             Id = 3,
-                            CoachId = 0,
+                            CoachId = 3,
                             CreatedDate = new DateTime(2026, 7, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LeagueId = 1,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Argentina "
                         });
@@ -205,9 +231,17 @@ namespace EntityFrameworkCore.Data.Migrations
 
             modelBuilder.Entity("EntityFrameworkCore.Domain.Team", b =>
                 {
+                    b.HasOne("EntityFrameworkCore.Domain.Coach", "Coach")
+                        .WithOne("Team")
+                        .HasForeignKey("EntityFrameworkCore.Domain.Team", "CoachId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EntityFrameworkCore.Domain.League", "League")
                         .WithMany("Teams")
                         .HasForeignKey("LeagueId");
+
+                    b.Navigation("Coach");
 
                     b.Navigation("League");
                 });
@@ -229,6 +263,11 @@ namespace EntityFrameworkCore.Data.Migrations
                     b.Navigation("AwayTeam");
 
                     b.Navigation("HomeTeam");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.Domain.Coach", b =>
+                {
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("EntityFrameworkCore.Domain.League", b =>
