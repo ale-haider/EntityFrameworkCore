@@ -10,5 +10,7 @@ namespace EntityFrameworkCore.Domain
 
         public string? Name { get; set; }
 
+        public List<Team>? Teams { get; set; }
+
     }
 }
