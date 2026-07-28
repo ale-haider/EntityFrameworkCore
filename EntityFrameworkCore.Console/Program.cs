@@ -7,6 +7,17 @@ using Microsoft.EntityFrameworkCore;
 using var context = new FootballLeagueDbContext();
 
 Console.WriteLine(context.DbPath);
+
+
+
+
+
+
+
+
+
+
+
 //select * from teams
 //GetAllTeams();
 
