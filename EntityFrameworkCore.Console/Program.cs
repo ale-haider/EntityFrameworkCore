@@ -103,24 +103,63 @@ Gradient descent with regularization
 
 Regularized logistic regression
 
+///NERUAL NETWORK LAYER
+layers 
+pridicts based on what is provided
 
+layer dont include the input layer 0
+
+aj[l] = g (wj[l] . a->a[l-1] + bj[l]
+
+//// MAKING PREDICTION (FORWARD PROPAGATION) 
+1ST layer 25 units
+2nd layer 15 units 
+3rd layer 1 unit
 
 */
+////INFERENCE IN CODE
+/// X = mnp.array ([[200.0 , 17.0]])
+/// layer_1 = Dense(units = 3, activation = 'sigmoid')
+/// a1 = layer1(x)
+/// 2*3 matrix 
+/// x = np.array ([[1 2],
+///                 [3 4],
+///                 [5 6]])
+///  2D Matrix
+///  forward propagation or infrence
+///  tf.Tensor 9[[ 27 3]], shape = (1,3 ), dtype = float = 32)
+///  a1.numpy()
+///  tensorflow can string the layers directly to neural netwrok
+///  model = sequential*[ layer_1 , layer_2])
+/// model.fit(x,y)
+/// model.predict
+/// def dense(a_in ,w, b):
+///     w - np.array([[ ],[ ], [ ] ,])
+///     imots = w.shape [1]
+///     a-out = np.zwros(units)
+///     for j in range(units) :
+///     w = 2[: , j]
+///     z = np.dot(w , a_in)  + b[j]
+///     a_out[j] = g(z)
+///     return a_out
+///  
+
+
 
 
 
 //// NO TRACKTING -EF CORE TRACKS OBJECTS THAT ARE RETUREND BY QUERIES
-////discontineous lik API
+///discontineous lik API
 
-//var teams = await context.Teams
-//    .AsNoTracking()
-//    //for readonly
-//    .ToListAsync();
+///var teams = await context.Teams
+///    .AsNoTracking()
+///    //for readonly
+///   .ToListAsync();
 
-//foreach (var t in teams)
-//{
-//    Console.WriteLine($"{t.Name}");
-//}
+///foreach (var t in teams)
+///{
+///    Console.WriteLine($"{t.Name}");
+///}
 
 async Task FindingFunction()
 {
@@ -640,4 +679,38 @@ await context.AddAsync(league);
 await context.SaveChangesAsync();
 }
 
+
+////PROJECTIONS AND ANONYMUS DATA TYPES
+
+async Task Projection()
+{
+
+    var tesms = await context.Teams
+        .Select(q => new TeamDetails
+        {
+            TeamId = q.Id,
+            TeamName = q.Name,
+            CoachName = q.Coach.Name,
+            TotalHomeGoal = q.HomeMatches.Sum(x => x.HomeTeamScore),
+            TotalAwayGoal = q.AwayMatches.Sum(x => x.AwayTeamScore),
+
+        })
+        .ToListAsync();
+
+    foreach (var team in tesms)
+    {
+        Console.WriteLine($"{team.TeamName} - {team.CoachName} | Home Goals: {team.TotalHomeGoal} | Away Goals: {team.TotalAwayGoal}");
+
+    }
+
+}
+    class TeamDetails
+    {
+        public int TeamId { get; set; }
+        public string? TeamName { get; set; }
+        public string? CoachName { get; set; }
+
+        public int TotalHomeGoal { get; set; }
+        public int TotalAwayGoal { get; set; }
+    }
 
