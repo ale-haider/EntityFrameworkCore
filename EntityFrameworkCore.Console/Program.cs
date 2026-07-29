@@ -2,6 +2,7 @@
 
 using EntityFrameworkCore.Data;
 using EntityFrameworkCore.Domain;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 using var context = new FootballLeagueDbContext();
@@ -705,9 +706,34 @@ await context.SaveChangesAsync();
 }
 
 
-
+//// RAW SQL
 #region RAW SQL
-var details = await context.TeamsAndLeaguesView.ToListAsync();
+
+Console.WriteLine("enter team name");
+var teamName = Console.ReadLine();
+
+
+var teamNameParm = new SqliteParameter("teamName", teamName);
+var teams = context.Teams.FromSqlRaw($" SELECT * FROM Teams WHERE name = @teamName", teamNameParm);
+//var details = await context.TeamsAndLeaguesView.ToListAsync();
+foreach(var t in teams)
+{
+    Console.WriteLine(t);
+}
+////MIXING WITH LINQ
+///var teamsList = context.Teams.FromSql($"SELECT * FROM Teams")
+///    .Where(q => q.Id == 1)
+///    .OrderBy(q => q.Id)
+///    .Include("League")
+///    .ToList();
+
+///foreach (var t in teamsList)
+///{
+///    Console.WriteLine(t);
+///}
+
+///var league = context.Leagues
+///    .FromSqlInterpolated($"EXEC dbo.StroredProcedureToGetLeaguesNameHere {leaguId}");
 
 #endregion
 
