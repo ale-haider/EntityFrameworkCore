@@ -11,7 +11,7 @@ namespace EntityFrameworkCore.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-             CREATE VIEW vw_TeamAndLeagues
+             CREATE VIEW vw_TeamAndLeagues  
              As
             SELECT t.Name , l.Name AS LeagueName
              FROM Teams AS t

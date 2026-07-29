@@ -9,6 +9,12 @@ using var context = new FootballLeagueDbContext();
 Console.WriteLine(context.DbPath);
 
 
+
+
+
+
+
+
 //select * from teams
 //GetAllTeams();
 
@@ -699,6 +705,14 @@ await context.SaveChangesAsync();
 }
 
 
+
+#region RAW SQL
+var details = await context.TeamsAndLeaguesView.ToListAsync();
+
+#endregion
+
+
+
 ////PROJECTIONS AND ANONYMUS DATA TYPES
 
 async Task Projection()
@@ -723,15 +737,5 @@ async Task Projection()
     }
 
 }
-    class TeamDetails
-    {
-        public int TeamId { get; set; }
-        public string? TeamName { get; set; }
-        public string? CoachName { get; set; }
-
-        public int TotalHomeGoal { get; set; }
-        public int TotalAwayGoal { get; set; }
-    }
-
 
 
