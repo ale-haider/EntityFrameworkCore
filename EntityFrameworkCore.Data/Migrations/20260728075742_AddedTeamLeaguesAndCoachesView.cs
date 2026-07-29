@@ -10,12 +10,20 @@ namespace EntityFrameworkCore.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.Sql(@"
+             CREATE VIEW vw_TeamAndLeagues
+             As
+            SELECT t.Name , l.Name AS LeagueName
+             FROM Teams AS t
+             LEFT JOIN Leagues AS l ON t.LeagueId = l.Id
+            
+                ");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql(@" DROP VIEW vw_TeamAndLeagues");
 
         }
     }
