@@ -420,6 +420,8 @@ async Task UpdateWithNoTracking()
     await context.SaveChangesAsync();
     Console.WriteLine(context.ChangeTracker.DebugView.LongView);
 }
+
+
 //INSERTING DATA
 //SIMPLE INSERT
 
@@ -705,40 +707,6 @@ await context.AddAsync(league);
 await context.SaveChangesAsync();
 }
 
-
-//// RAW SQL
-#region RAW SQL
-
-Console.WriteLine("enter team name");
-var teamName = Console.ReadLine();
-
-
-var teamNameParm = new SqliteParameter("teamName", teamName);
-var teams = context.Teams.FromSqlRaw($" SELECT * FROM Teams WHERE name = @teamName", teamNameParm);
-//var details = await context.TeamsAndLeaguesView.ToListAsync();
-foreach(var t in teams)
-{
-    Console.WriteLine(t);
-}
-////MIXING WITH LINQ
-///var teamsList = context.Teams.FromSql($"SELECT * FROM Teams")
-///    .Where(q => q.Id == 1)
-///    .OrderBy(q => q.Id)
-///    .Include("League")
-///    .ToList();
-
-///foreach (var t in teamsList)
-///{
-///    Console.WriteLine(t);
-///}
-
-///var league = context.Leagues
-///    .FromSqlInterpolated($"EXEC dbo.StroredProcedureToGetLeaguesNameHere {leaguId}");
-
-#endregion
-
-
-
 ////PROJECTIONS AND ANONYMUS DATA TYPES
 
 async Task Projection()
@@ -763,5 +731,74 @@ async Task Projection()
     }
 
 }
+
+
+
+    //// RAW SQL
+async Task RawSql()
+{
+
+    Console.WriteLine("enter team name");
+    var teamName = Console.ReadLine();
+
+
+    var teamNameParm = new SqliteParameter("teamName", teamName);
+    var teams = context.Teams.FromSqlRaw($" SELECT * FROM Teams WHERE name = @teamName", teamNameParm);
+    //var details = await context.TeamsAndLeaguesView.ToListAsync();
+    foreach (var t in teams)
+    {
+        Console.WriteLine(t);
+    }
+////MIXING WITH LINQ
+///var teamsList = context.Teams.FromSql($"SELECT * FROM Teams")
+///    .Where(q => q.Id == 1)
+///    .OrderBy(q => q.Id)
+///    .Include("League")
+///    .ToList();
+
+///foreach (var t in teamsList)
+///{
+///    Console.WriteLine(t);
+///}
+
+///var league = context.Leagues
+///    .FromSqlInterpolated($"EXEC dbo.StroredProcedureToGetLeaguesNameHere {leaguId}");
+
+}
+
+async Task QueryScaler()
+{
+    //// QUERY SCALER
+    var leagueIds = context.Database.SqlQuery<int>($"SELECT Id FROM  Leagues")
+        .ToList();
+}
+
+#region RAW SQL
+
+
+////EXECUTING USER DEFINED FUNCTIONS
+
+///CREATE FUNCTION[dbo].[GetEarliestMatch](@teamId int)
+/// RETURENS datetime
+/// BEGIN
+/// DECLARE @result datetime
+///         SELECT TOP 1 @result = date
+///         order by Date
+///         retutn @result
+///     END
+
+  
+//var earliestMatch = context.GetEarliestTeamMatch(1);
+
+ 
+
+#endregion
+
+
+
+
+
+
+
 
 
