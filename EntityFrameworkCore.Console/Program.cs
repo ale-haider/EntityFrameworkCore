@@ -9,15 +9,6 @@ using var context = new FootballLeagueDbContext();
 Console.WriteLine(context.DbPath);
 
 
-
-
-
-
-
-
-
-
-
 //select * from teams
 //GetAllTeams();
 
@@ -155,6 +146,19 @@ aj[l] = g (wj[l] . a->a[l-1] + bj[l]
 ///     return a_out
 ///  
 
+////AGI
+/// ANI( artificial narroow intellegence )=> can do a narrow task very well
+/// AGI ( artificail general intellegence) => can do anything a human can do
+////HOW NEURAL NEWWORK ARE IMPLEMETNED EFFICIENTLY
+///
+
+////TENSORFLOW IMPLEMENTAION 
+/// 
+
+
+
+
+
 
 
 
@@ -269,6 +273,7 @@ async Task GetAllTeamsQuerySyntax()
         Console.WriteLine(t.Name);
     }
 }
+
 
 async Task GetFilteredTeams()
 {
@@ -488,6 +493,7 @@ async Task InsertRange()
 
 #region Related Data
 
+#endregion
 //// Lazy loading //  IT IS HIGHLY DISCOURGAED AS IT SLOWS DOWN DATA LOADING
 
 //var league = await context.FindAsync<League>(1);
@@ -512,25 +518,27 @@ async Task InsertRange()
 ////📝FILTRING INCLUDES
 ////GET ALL TEAMS AND ONLY HOME MATCHES WHERE THERY HAVE SCORED
 //// AWAIT INSETMOREMATCHES();
-var teams = await context.Teams
 
-    .Include("Coach")
-    .Include(q => q.HomeMatches.Where(q => q.HomeTeamScore > 0))
-    .ToArrayAsync();
+//async Task getAllTeamsWithLeagueCoachAndScores();
+//{
+//    var teams = await context.Teams
 
-
-foreach (var team in teams)
-{
-    Console.WriteLine($"{team.Name} - {team.Coach.Name}");
-    foreach (var match in team.HomeMatches )
-    {
-        Console.WriteLine($" Score {match.HomeTeamScore}");
-    }
-
-}
+//        .Include("Coach")
+//        .Include(q => q.HomeMatches.Where(q => q.HomeTeamScore > 0))
+//        .ToArrayAsync();
 
 
-#endregion
+//    foreach (var team in teams)
+//    {
+//        Console.WriteLine($"{team.Name} - {team.Coach.Name}");
+//        foreach (var match in team.HomeMatches)
+//        {
+//            Console.WriteLine($" Score {match.HomeTeamScore}");
+//        }
+
+//    }
+
+//}
 
 
 // explicit loading
@@ -724,4 +732,6 @@ async Task Projection()
         public int TotalHomeGoal { get; set; }
         public int TotalAwayGoal { get; set; }
     }
+
+
 
