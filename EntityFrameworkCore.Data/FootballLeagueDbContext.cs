@@ -19,6 +19,12 @@ namespace EntityFrameworkCore.Data
             var path = Environment.GetFolderPath(folder);
             DbPath = Path.Combine(path, "FootballLeague_EfCore.db");
         }
+
+        public FootballLeagueDbContext(DbContextOptions<FootballLeagueDbContext> options) : base
+    (options)
+        {
+
+        }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<League> Leagues { get; set; }
@@ -36,6 +42,7 @@ namespace EntityFrameworkCore.Data
                 .EnableSensitiveDataLogging()
                  .EnableDetailedErrors();
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
