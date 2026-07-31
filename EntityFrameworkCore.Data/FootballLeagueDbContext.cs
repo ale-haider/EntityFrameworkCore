@@ -1,7 +1,9 @@
 ﻿using EntityFrameworkCore.Data.Configurations;
 using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,10 @@ namespace EntityFrameworkCore.Data
     public class FootballLeagueDbContext : DbContext
 
     {
+        //public FootballLeagueDbContext(DbContextOptions<FootballLeagueDbContext> 
+        //    options) : base(options) 
+        //{ 
+        //}
         public FootballLeagueDbContext()
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
@@ -20,11 +26,11 @@ namespace EntityFrameworkCore.Data
             DbPath = Path.Combine(path, "FootballLeague_EfCore.db");
         }
 
-        public FootballLeagueDbContext(DbContextOptions<FootballLeagueDbContext> options) : base
-    (options)
-        {
+        public FootballLeagueDbContext(DbContextOptions options) : base(options)
+        { }
 
-        }
+
+
         public DbSet<Team> Teams { get; set; }
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<League> Leagues { get; set; }
@@ -43,7 +49,6 @@ namespace EntityFrameworkCore.Data
                  .EnableDetailedErrors();
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.ApplyConfiguration(new TeamConfiguration());
@@ -54,35 +59,33 @@ namespace EntityFrameworkCore.Data
             //modelBuilder.HasDbFunction(typeof(FootballLeagueDbContext)
             //    .GetMethod(nameof)(GetEarliestTeamMatch), new[] { typeof(int) })
             //    .HasName("fn_GetEarliestMatch");
-               
+
         }
         //public DateTime GetEarliestTeamMatch(int teamId) => throw new NotImplementedException();
     }
 
-    //internal class LeagueConfiguration : IEntityTypeConfiguration<League>
-    //{
-    //    public void Configure ( EntityTypeBuilder<League> builder )
-    //    {
-    //        builder.HasData(
-    //                new League
-    //                {
-    //                    Id = 1,
-    //                    Name = "Barcalona",
-                        
-    //                },
-    //               new League
-    //               {
-    //                    Id = 2,
-    //                    Name = "Humble Lions F.C.",
+    public class FottballLeagueDbContextFactory : IDesignTimeDbContextFactory<FootballLeagueDbContext>
+    {
+        public FootballLeagueDbContext CreateDbContext(string[] args)
+        {
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
 
-    //                },
-    //                new League
-    //                {
-    //            dddd        Id = 3,
-    //                    Name = "Barcalona",
-        
-    //                }
-    //            ); 
-    //    }
-    //}
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.jason")
+                .Build();
+
+
+            var dbPath = Path.Combine(path, configuration.GetConnectionString
+                ("SqliteDatabaseConnectionString"));
+
+
+            var optionBuilder = new DbContextOptionsBuilder<FootballLeagueDbContext>();
+            optionBuilder.UseSqlite(dbPath);
+
+            return new FootballLeagueDbContext(optionBuilder.Options);
+        }
+    }
+
 }
