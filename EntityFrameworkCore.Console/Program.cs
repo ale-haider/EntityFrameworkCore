@@ -161,6 +161,18 @@ aj[l] = g (wj[l] . a->a[l-1] + bj[l]
 
 ////TENSORFLOW IMPLEMENTAION 
 /// 
+//// COURSE2 : WEEK 3
+//// Topic: alternatives to sigmoid activation
+/// chossing an alternative to activation functions
+/// for outer layer: use sigmoid/
+/// for hideen layeres use : Relu
+//// WHY DO WE NEED ACTIVATION FUNCTION
+///
+/// 
+//// MULTICLASS CLASSIFICATION
+/// 
+/// 
+
 
 
 
@@ -303,7 +315,7 @@ async Task GetFilteredTeams()
         Console.WriteLine(item.Name);
     }
 }
-//
+
 async Task GetAllTeams()
 {
 
