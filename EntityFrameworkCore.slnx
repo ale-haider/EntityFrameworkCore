@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="EntityFrameworkCore.Api/EntityFrameworkCore.Api.csproj" Id="a7d25aad-07aa-4a6e-9bb8-30f3de729a61" />
   <Project Path="EntityFrameworkCore.Console/EntityFrameworkCore.Console.csproj" />
   <Project Path="EntityFrameworkCore.Data/EntityFrameworkCore.Data.csproj" />
   <Project Path="EntityFrameworkCore.Domain/EntityFrameworkCore.Domain.csproj" />
