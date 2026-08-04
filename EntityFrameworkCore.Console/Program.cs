@@ -10,7 +10,8 @@ using var context = new FootballLeagueDbContext();
 Console.WriteLine(context.DbPath);
 
 
-
+var folder = Environment.SpecialFolder.LocalApplicationData;
+var path = Environment.GetFolderPath(folder);
 
 
 
