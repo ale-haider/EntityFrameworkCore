@@ -14,6 +14,7 @@ var folder = Environment.SpecialFolder.LocalApplicationData;
 var path = Environment.GetFolderPath(folder);
 var dbPath = Path.Combine(path, "FootballLeague_EfCore.db");
 var optionsBuilder = new DbContextOptionsBuilder<FootballLeagueDbContext>();
+using FootballLeagueDbContext context1 = new FootballLeagueDbContext(optionsBuilder.Options);
 
 
 
