@@ -12,6 +12,8 @@ Console.WriteLine(context.DbPath);
 
 var folder = Environment.SpecialFolder.LocalApplicationData;
 var path = Environment.GetFolderPath(folder);
+var dbPath = Path.Combine(path, "FootballLeague_EfCore.db");
+
 
 
 
