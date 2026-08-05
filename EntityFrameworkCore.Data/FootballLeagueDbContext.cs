@@ -39,6 +39,26 @@ namespace EntityFrameworkCore.Data
 
         public string DbPath { get; private set; }
 
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker.Entries<BaseDomainModel>  ()
+                .Where(q => q.State == EntityState.Modified || q.State == EntityState.Added);
+
+            foreach (var entry in entries) 
+            {
+                entry.Entity.ModifiedDate = DateTime.UtcNow;
+                entry.Entity.Modifiedby = " smaple user 1";
+
+                if ( entry.State == EntityState.Added )
+                {
+                    entry.Entity.CreatedDate = DateTime.UtcNow;
+                    entry.Entity.Createdby = " sample user";
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite($" Data Source={DbPath}")
@@ -63,6 +83,9 @@ namespace EntityFrameworkCore.Data
         }
         //public DateTime GetEarliestTeamMatch(int teamId) => throw new NotImplementedException();
     }
+
+    
+   
 
     public class FottballLeagueDbContextFactory : IDesignTimeDbContextFactory<FootballLeagueDbContext>
     {
