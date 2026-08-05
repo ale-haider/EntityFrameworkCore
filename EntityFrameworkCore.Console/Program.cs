@@ -321,6 +321,16 @@ async Task GetFilteredTeams()
     }
 }
 
+
+
+Console.WriteLine("enter the record to search");
+var searchTerm = Console.ReadLine();
+
+var filterdResult = await context.Teams.Where(q => q.Name  == searchTerm)
+    .Where(q => q.Id.ToString() == searchTerm )
+    .ToListAsync();
+
+
 async Task GetAllTeams()
 {
 
