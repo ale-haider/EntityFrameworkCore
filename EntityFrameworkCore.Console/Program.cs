@@ -329,7 +329,10 @@ var searchTerm = Console.ReadLine();
 var filterdResult = await context.Teams.Where(q => q.Name  == searchTerm)
     .Where(q => q.Id.ToString() == searchTerm )
     .ToListAsync();
-
+foreach (var item in filterdResult)
+{
+    Console.WriteLine(item.Name);
+}
 
 async Task GetAllTeams()
 {
